@@ -6,13 +6,19 @@ const Header = (prop) => {
     )
 }
 
+const Part = (prop) => {
+    return (
+        <p>
+            {prop.part.partName} {prop.part.exerciseNum}
+        </p>
+    )
+}
+
 const Content = (prop) => {
     const result = []
     prop.content.forEach((part) => {
         result.push(
-            <p key={part.partName}>
-                {part.partName} {part.exerciseNum}
-            </p>
+            <Part key={part.partName} part={part} />
         )
     })
     return result
