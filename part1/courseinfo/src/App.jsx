@@ -1,25 +1,47 @@
+const Header = (prop) => {
+    return (
+        <div>
+            <h1>{prop.course}</h1>
+        </div>
+    )
+}
+
+const Content = (prop) => {
+    const result = []
+    prop.content.forEach((part) => {
+        result.push(
+            <p key={part.partName}>
+                {part.partName} {part.exerciseNum}
+            </p>
+        )
+    })
+    return result
+}
+
+const Total = (prop) => {
+    return (
+        <p>Number of exercises {prop.exerciseTotal}</p>
+    )
+}
+
 const App = () => {
     const course = 'Half Stack application development'
-    const part1 = 'Fundamentals of React'
-    const exercises1 = 10
-    const part2 = 'Using props to pass data'
-    const exercises2 = 7
-    const part3 = 'State of a component'
-    const exercises3 = 14
+    const content = [
+        {partName: 'Fundamentals of React', exerciseNum: 10},
+        {partName: 'Using props to pass data', exerciseNum: 7},
+        {partName: 'State of a component', exerciseNum: 14},
+    ]
+    const exerciseTotal = content.map((part) => {
+        return part.exerciseNum
+    }).reduce((prev, next) => {
+        return prev + next
+    })
 
     return (
         <div>
-            <h1>{course}</h1>
-            <p>
-                {part1} {exercises1}
-            </p>
-            <p>
-                {part2} {exercises2}
-            </p>
-            <p>
-                {part3} {exercises3}
-            </p>
-            <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
+            <Header course={course}/>
+            <Content content={content}/>
+            <Total exerciseTotal={exerciseTotal}/>
         </div>
     )
 }
