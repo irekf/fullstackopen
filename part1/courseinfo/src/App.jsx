@@ -9,7 +9,7 @@ const Header = (prop) => {
 const Part = (prop) => {
     return (
         <p>
-            {prop.part.partName} {prop.part.exerciseNum}
+            {prop.part.name} {prop.part.exercises}
         </p>
     )
 }
@@ -18,7 +18,7 @@ const Content = (prop) => {
     const result = []
     prop.content.forEach((part) => {
         result.push(
-            <Part key={part.partName} part={part} />
+            <Part key={part.name} part={part} />
         )
     })
     return result
@@ -33,12 +33,12 @@ const Total = (prop) => {
 const App = () => {
     const course = 'Half Stack application development'
     const content = [
-        {partName: 'Fundamentals of React', exerciseNum: 10},
-        {partName: 'Using props to pass data', exerciseNum: 7},
-        {partName: 'State of a component', exerciseNum: 14},
+        {name: 'Fundamentals of React', exercises: 10},
+        {name: 'Using props to pass data', exercises: 7},
+        {name: 'State of a component', exercises: 14},
     ]
     const exerciseTotal = content.map((part) => {
-        return part.exerciseNum
+        return part.exercises
     }).reduce((prev, next) => {
         return prev + next
     })
