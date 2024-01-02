@@ -8,6 +8,14 @@ const Stat = ({name, value, unit=''}) => {
     return (<p>{name} {value} {unit}</p>)
 }
 
+const Statistics = ({stats}) => {
+    const result = []
+    stats.forEach((stat) => {
+        result.push(<p key={stat.name}>{stat.name} {stat.value} {stat.unit ? stat.unit : ''}</p>)
+    })
+    return result
+}
+
 const App = () => {
     // save clicks of each button to its own state
     const [good, setGood] = useState(0)
@@ -44,12 +52,14 @@ const App = () => {
                 setPositivePct(good / newTotal * 100)
             }}/>
             <h1>statistics</h1>
-            <Stat name={'good'} value={good}/>
-            <Stat name={'neutral'} value={neutral}/>
-            <Stat name={'bad'} value={bad}/>
-            <Stat name={'all'} value={total}/>
-            <Stat name={'average'} value={average}/>
-            <Stat name={'positive'} value={positivePct} unit={'%'}/>
+            <Statistics stats={[
+                {name: 'good', value: good},
+                {name: 'neutral', value: neutral},
+                {name: 'bad', value: bad},
+                {name: 'all', value: total},
+                {name: 'average', value: average},
+                {name: 'positive', value: positivePct, unit: '%'},
+            ]} />
         </div>
     )
 }
