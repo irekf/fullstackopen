@@ -4,16 +4,18 @@ const Button = ({text, onClick}) => {
     return (<button onClick={onClick}>{text}</button>)
 }
 
-const Stat = ({name, value, unit=''}) => {
-    return (<p>{name} {value} {unit}</p>)
-}
-
 const Statistics = ({stats}) => {
     const result = []
+    let hasStats = false
     stats.forEach((stat) => {
+        hasStats = stat.value !== 0 ? true : hasStats
         result.push(<p key={stat.name}>{stat.name} {stat.value} {stat.unit ? stat.unit : ''}</p>)
     })
-    return result
+    if (hasStats) {
+        return result
+    } else {
+        return (<p>No feedback given</p>)
+    }
 }
 
 const App = () => {
