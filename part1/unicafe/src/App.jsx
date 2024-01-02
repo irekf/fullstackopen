@@ -4,21 +4,26 @@ const Button = ({text, onClick}) => {
     return (<button onClick={onClick}>{text}</button>)
 }
 
-const StatisticLine = ({name, value, unit=''}) => {
-    return (<p>{name} {value} {unit}</p>)
+const StatisticRow = ({name, value, unit = ''}) => {
+    return (
+        <tr>
+            <td>{name}</td>
+            <td>{value} {unit}</td>
+        </tr>
+    )
 }
 
 const Statistics = ({good, neutral, bad, total, average, positivePct}) => {
     if (total > 0) {
         return (
-            <>
-                <StatisticLine name={'good'} value={good}/>
-                <StatisticLine name={'neutral'} value={neutral}/>
-                <StatisticLine name={'bad'} value={bad}/>
-                <StatisticLine name={'all'} value={total}/>
-                <StatisticLine name={'average'} value={average}/>
-                <StatisticLine name={'positive'} value={positivePct} unit={'%'}/>
-            </>
+            <table>
+                <StatisticRow name={'good'} value={good}/>
+                <StatisticRow name={'neutral'} value={neutral}/>
+                <StatisticRow name={'bad'} value={bad}/>
+                <StatisticRow name={'all'} value={total}/>
+                <StatisticRow name={'average'} value={average}/>
+                <StatisticRow name={'positive'} value={positivePct} unit={'%'}/>
+            </table>
         )
     } else {
         return (<p>No feedback given</p>)
