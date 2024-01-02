@@ -4,15 +4,22 @@ const Button = ({text, onClick}) => {
     return (<button onClick={onClick}>{text}</button>)
 }
 
-const Statistics = ({stats}) => {
-    const result = []
-    let hasStats = false
-    stats.forEach((stat) => {
-        hasStats = stat.value !== 0 ? true : hasStats
-        result.push(<p key={stat.name}>{stat.name} {stat.value} {stat.unit ? stat.unit : ''}</p>)
-    })
-    if (hasStats) {
-        return result
+const StatisticLine = ({name, value, unit=''}) => {
+    return (<p>{name} {value} {unit}</p>)
+}
+
+const Statistics = ({good, neutral, bad, total, average, positivePct}) => {
+    if (total > 0) {
+        return (
+            <>
+                <StatisticLine name={'good'} value={good}/>
+                <StatisticLine name={'neutral'} value={neutral}/>
+                <StatisticLine name={'bad'} value={bad}/>
+                <StatisticLine name={'all'} value={total}/>
+                <StatisticLine name={'average'} value={average}/>
+                <StatisticLine name={'positive'} value={positivePct} unit={'%'}/>
+            </>
+        )
     } else {
         return (<p>No feedback given</p>)
     }
@@ -54,14 +61,8 @@ const App = () => {
                 setPositivePct(good / newTotal * 100)
             }}/>
             <h1>statistics</h1>
-            <Statistics stats={[
-                {name: 'good', value: good},
-                {name: 'neutral', value: neutral},
-                {name: 'bad', value: bad},
-                {name: 'all', value: total},
-                {name: 'average', value: average},
-                {name: 'positive', value: positivePct, unit: '%'},
-            ]} />
+            <Statistics good={good} neutral={neutral} bad={bad} total={total} average={average}
+                        positivePct={positivePct}/>
         </div>
     )
 }
