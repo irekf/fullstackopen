@@ -39,31 +39,28 @@ const App = () => {
     const [average, setAverage] = useState(0.0)
     const [positivePct, setPositivePct] = useState(0.0)
 
+    const updateDerivedStats = (good, bad, total) => {
+        setTotal(total)
+        setAverage((good - bad) / total)
+        setPositivePct(good / total * 100)
+    }
+
     return (
         <div>
             <h1>give feedback</h1>
             <Button text={'good'} onClick={() => {
                 const newGood = good + 1
                 setGood(newGood)
-                const newTotal = total + 1
-                setTotal(newTotal)
-                setAverage((newGood - bad) / newTotal)
-                setPositivePct(newGood / newTotal * 100)
+                updateDerivedStats(newGood, bad, total + 1)
             }}/>
             <Button text={'neutral'} onClick={() => {
                 setNeutral(neutral + 1)
-                const newTotal = total + 1
-                setTotal(newTotal)
-                setAverage((good - bad) / newTotal)
-                setPositivePct(good / newTotal * 100)
+                updateDerivedStats(good, bad, total + 1)
             }}/>
             <Button text={'bad'} onClick={() => {
                 const newBad = bad + 1
                 setBad(newBad)
-                const newTotal = total + 1
-                setTotal(newTotal)
-                setAverage((good - newBad) / newTotal)
-                setPositivePct(good / newTotal * 100)
+                updateDerivedStats(good, newBad, total + 1)
             }}/>
             <h1>statistics</h1>
             <Statistics good={good} neutral={neutral} bad={bad} total={total} average={average}
