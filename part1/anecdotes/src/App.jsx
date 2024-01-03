@@ -26,9 +26,11 @@ const App = () => {
     const zeroPoints = new Array(anecdotes.length)
     zeroPoints.fill(0)
     const [points, setPoints] = useState(zeroPoints)
+    const [maxVotesIdx, setMaxVotesIdx] = useState(0)
 
     return (
         <div>
+            <h2>Anecdote of the day</h2>
             {anecdotes[selected]}
             <p>
                 has {points[selected]} votes
@@ -38,9 +40,14 @@ const App = () => {
                     const updatedPoints = [...points]
                     updatedPoints[selected] += 1
                     setPoints(updatedPoints)
+                    if (updatedPoints[maxVotesIdx] < updatedPoints[selected]) {
+                        setMaxVotesIdx(selected)
+                    }
                 }}/>
                 <Button text={'Next anecdote'} onClick={() => setSelected(getRandomInt(anecdotes.length))}/>
             </p>
+            <h2>Anecdote with the most votes</h2>
+            {anecdotes[maxVotesIdx]}
         </div>
     )
 }
