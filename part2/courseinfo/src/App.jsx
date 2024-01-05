@@ -1,68 +1,66 @@
-const Header = (prop) => {
+const Header = ({course}) => {
     return (
         <div>
-            <h1>{prop.course}</h1>
+            <h1>{course}</h1>
         </div>
     )
 }
 
-const Part = (prop) => {
+const Part = ({part}) => {
     return (
         <p>
-            {prop.part.name} {prop.part.exercises}
+            {part.name} {part.exercises}
         </p>
     )
 }
 
-const Content = (prop) => {
+const Content = ({content}) => {
     const result = []
-    prop.content.forEach((part) => {
+    content.forEach((part) => {
         result.push(
-            <Part key={part.name} part={part} />
+            <Part key={part.id} part={part} />
         )
     })
     return result
 }
 
-const Total = (prop) => {
-    return (
-        <p>Number of exercises {prop.exerciseTotal}</p>
-    )
-}
 
-const App = () => {
-
-    const course = {
-        name: 'Half Stack application development',
-        parts: [
-            {
-                name: 'Fundamentals of React',
-                exercises: 10
-            },
-            {
-                name: 'Using props to pass data',
-                exercises: 7
-            },
-            {
-                name: 'State of a component',
-                exercises: 14
-            }
-        ]
-    }
-
-    const exerciseTotal = course.parts.map((part) => {
-        return part.exercises
-    }).reduce((prev, next) => {
-        return prev + next
-    })
+const Course = ({course}) => {
 
     return (
         <div>
             <Header course={course.name}/>
             <Content content={course.parts}/>
-            <Total exerciseTotal={exerciseTotal}/>
         </div>
     )
+}
+
+
+const App = () => {
+
+    const course = {
+        id: 1,
+        name: 'Half Stack application development',
+        parts: [
+            {
+                name: 'Fundamentals of React',
+                exercises: 10,
+                id: 1
+            },
+            {
+                name: 'Using props to pass data',
+                exercises: 7,
+                id: 2
+            },
+            {
+                name: 'State of a component',
+                exercises: 14,
+                id: 3
+            },
+        ]
+    }
+
+    return <Course course={course} />
 }
 
 export default App
