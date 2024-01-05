@@ -24,13 +24,24 @@ const Content = ({content}) => {
     return result
 }
 
+const Total = (prop) => {
+    return (
+        <p><b>total of {prop.exerciseTotal} exercises</b></p>
+    )
+}
 
 const Course = ({course}) => {
+    const exerciseTotal = course.parts.map((part) => {
+        return part.exercises
+    }).reduce((prev, next) => {
+        return prev + next
+    })
 
     return (
         <div>
             <Header course={course.name}/>
             <Content content={course.parts}/>
+            <Total exerciseTotal={exerciseTotal}/>
         </div>
     )
 }
