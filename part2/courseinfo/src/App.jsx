@@ -31,12 +31,7 @@ const Total = (prop) => {
 }
 
 const Course = ({course}) => {
-    const exerciseTotal = course.parts.map((part) => {
-        return part.exercises
-    }).reduce((prev, next) => {
-        return prev + next
-    })
-
+    const exerciseTotal = Object.values(course.parts).reduce((prev, {exercises}) => prev + exercises, 0)
     return (
         <div>
             <Header course={course.name}/>
