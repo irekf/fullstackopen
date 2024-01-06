@@ -10,6 +10,7 @@ const App = () => {
     ])
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
+    const [prefix, setPrefix] = useState('')
 
     const addNumber = (event) => {
         event.preventDefault()
@@ -33,6 +34,8 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
+            <div>filter shown with <input value={prefix} onChange={(e) => setPrefix(e.target.value)}/></div>
+            <h2>add a new</h2>
             <form onSubmit={addNumber}>
                 <div>
                     name: <input value={newName} onChange={(e) => setNewName(e.target.value)}/>
@@ -46,9 +49,9 @@ const App = () => {
             </form>
             <h2>Numbers</h2>
             <ul>
-                {persons.map((person) =>
-                    <li key={person.id}>{person.name} {person.number}</li>
-                )}
+                {persons.filter((person) => person.name.toLowerCase().startsWith(prefix.toLowerCase()))
+                    .map((person) => <li key={person.id}>{person.name} {person.number}</li>
+                    )}
             </ul>
         </div>
     )
