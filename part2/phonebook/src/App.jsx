@@ -7,13 +7,7 @@ import PersonForm from "./components/PersonForm"
 import Persons from "./components/Persons"
 
 const App = () => {
-    const [persons, setPersons] = useState([
-        {
-            id: 0,
-            name: 'Arto Hellas',
-            number: "040-7654321",
-        }
-    ])
+    const [persons, setPersons] = useState([])
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [prefix, setPrefix] = useState('')
@@ -33,7 +27,8 @@ const App = () => {
             return
         }
         if (!persons.find((element) => element.name === newName)) {
-            setPersons(persons.concat({id: persons.length, name: newName, number: newNumber}))
+            const id = persons.length > 0 ? persons[persons.length - 1] : 1
+            setPersons(persons.concat({id: id, name: newName, number: newNumber}))
             setNewName('')
             setNewNumber('')
         } else {
