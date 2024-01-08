@@ -1,10 +1,9 @@
-import {useState, useEffect} from 'react'
-
-import axios from 'axios'
+import {useEffect, useState} from 'react'
 
 import Filter from './components/Filter'
 import PersonForm from "./components/PersonForm"
 import Persons from "./components/Persons"
+import personsService from "./services/persons"
 
 const App = () => {
     const [persons, setPersons] = useState([])
@@ -13,7 +12,9 @@ const App = () => {
     const [prefix, setPrefix] = useState('')
 
     useEffect(() => {
-        axios.get("http://localhost:3001/persons").then((resp) => setPersons(resp.data))
+        personsService.getAll()
+            .then((remotePersons) => setPersons(remotePersons))
+            .catch((error) => alert(`Persons not fetched: \"${error}\"`))
     }, [])
 
     const addNumber = (event) => {
@@ -27,9 +28,8 @@ const App = () => {
             return
         }
         if (!persons.find((element) => element.name === newName)) {
-            axios.post("http://localhost:3001/persons", {name: newName, number: newNumber})
-                .then((resp) => {
-                    const newEntry = resp.data
+            personsService.add(newName, newNumber)
+                .then((newEntry) => {
                     setPersons(persons.concat(newEntry))
                     setNewName('')
                     setNewNumber('')
