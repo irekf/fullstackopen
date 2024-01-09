@@ -8,4 +8,8 @@ const add = (name, number) => {
     return axios.post(baseUrl, {name, number}).then((resp) => resp.data)
 }
 
-export default {getAll, add}
+const remove = (id) => {
+    return axios.delete(`${baseUrl}/${id}`).then((resp) => {resp.status})
+}
+
+export default {getAll, add, remove}

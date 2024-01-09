@@ -49,7 +49,13 @@ const App = () => {
                         phoneNumber={newNumber} onPhoneNumberChange={(e) => setNewNumber(e.target.value)}
                         onSubmit={addNumber}/>
             <h3>Numbers</h3>
-            <Persons persons={persons} prefix={prefix}/>
+            <Persons persons={persons} prefix={prefix} onDelete={(person) => {
+                personsService.remove(person.id)
+                    .then((status) => {
+                        setPersons(persons.filter((p) => p.id !== person.id))
+                    })
+                    .catch((error) => alert(`Entry for ${person} not deleted: \"${error}\"`))
+            }}/>
         </div>
     )
 }
