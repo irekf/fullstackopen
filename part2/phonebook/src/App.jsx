@@ -27,7 +27,8 @@ const App = () => {
             alert(`Enter a number`)
             return
         }
-        if (!persons.find((element) => element.name === newName)) {
+        const existingEntry = persons.find((element) => element.name === newName)
+        if (!existingEntry) {
             personsService.add(newName, newNumber)
                 .then((newEntry) => {
                     setPersons(persons.concat(newEntry))
@@ -36,7 +37,15 @@ const App = () => {
                 })
                 .catch((error) => alert(`New entry not added: \"${error}\"`))
         } else {
-            alert(`${newName} is already added to phonebook`)
+            if (window.confirm(`${newName} is already in the phone book. Update the number?`)) {
+                personsService.update(existingEntry.id, newName, newNumber)
+                    .then((updatedEntry) => {
+                        setPersons(persons.map((entry) => updatedEntry.id === entry.id ? updatedEntry : entry))
+                        setNewName('')
+                        setNewNumber('')
+                    })
+                    .catch((error) => alert(`Existing entry not updated: \"${error}\"`))
+            }
         }
     }
 
