@@ -12,15 +12,53 @@ const Languages = ({languages}) => {
     )
 }
 
+const api_key = import.meta.env.VITE_OPENWEATHERMAP_API_KEY
+
+const Weather = ({country}) => {
+
+    const [weather, setWeather] = useState(null)
+
+    if (weather) {
+        return (
+            <>
+                <h2>Weather in {country.capital[0]}</h2>
+                <b>Temperature:</b> {weather.main.temp} Celsius<br/>
+                <img src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+                     alt='weather icon'/><br/>
+                <b>Wind:</b> {weather.wind.speed} m/s
+            </>
+        )
+    } else {
+        const lat = country.capitalInfo.latlng[0]
+        const lng = country.capitalInfo.latlng[1]
+        return (
+            <>
+                <h2>Weather in {country.capital[0]}</h2>
+                <button onClick={() => {
+                    axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=metric&appid=${api_key}`)
+                        .then((resp) => {
+                            setWeather(resp.data)
+                        })
+                        .catch((err) => alert(`${err}`))
+                }}>Request weather
+                </button>
+            </>
+        )
+    }
+
+}
+
 const CountryDetails = ({country}) => {
+
     return (
-        <p>
+        <>
             <h2>{country.name.common}</h2>
             <b>Capital:</b> {country.capital[0]}
             <br/><b>Area:</b> {country.area}
             <Languages languages={Object.values(country.languages)}/>
             <span style={{fontSize: '150px'}}>{country.flag}</span>
-        </p>
+            <Weather country={country}/>
+        </>
     )
 }
 const CountryInfo = ({countries, filter}) => {
@@ -69,12 +107,14 @@ function App() {
             .catch((err) => alert(`${err}`))
     }, [])
 
-    return (<>
-        <div>
-            Country filter: &nbsp; <input onChange={(e) => setCountryFilter(e.target.value ? e.target.value : '')}/>
-        </div>
-        <CountryInfo countries={countries} filter={countryFilter}/>
-    </>)
+    return (
+        <>
+            <div>
+                Country filter: &nbsp; <input onChange={(e) => setCountryFilter(e.target.value ? e.target.value : '')}/>
+            </div>
+            <CountryInfo countries={countries} filter={countryFilter}/>
+        </>
+    )
 }
 
 export default App
