@@ -4,3 +4,4 @@ Use the links below to navigate to the submission of a specific part of the cour
 
 * [part0](./part0/README.md)
 * [part1](./part1/README.md)
+* [part2](./part2/README.md)
