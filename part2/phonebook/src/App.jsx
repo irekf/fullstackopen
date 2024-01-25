@@ -48,9 +48,9 @@ const App = () => {
                 .catch((error) => printTempMessage(`New entry not added: \"${error}\"`, MessageType.Error))
         } else {
             if (window.confirm(`${newName} is already in the phone book. Update the number?`)) {
-                personsService.update(existingEntry.id, newName, newNumber)
+                personsService.update(existingEntry._id, newName, newNumber)
                     .then((updatedEntry) => {
-                        setPersons(persons.map((entry) => updatedEntry.id === entry.id ? updatedEntry : entry))
+                        setPersons(persons.map((entry) => updatedEntry._id === entry._id ? updatedEntry : entry))
                         setNewName('')
                         setNewNumber('')
                         printTempMessage(`Entry updated for ${newName}`, MessageType.Info)
@@ -70,9 +70,9 @@ const App = () => {
                         onSubmit={addNumber}/>
             <h3>Numbers</h3>
             <Persons persons={persons} prefix={prefix} onDelete={(person) => {
-                personsService.remove(person.id)
+                personsService.remove(person._id)
                     .then((status) => {
-                        setPersons(persons.filter((p) => p.id !== person.id))
+                        setPersons(persons.filter((p) => p._id !== person._id))
                         printTempMessage(`Entry removed for ${person.name}`, MessageType.Info)
                     })
                     .catch((error) => printTempMessage(`Entry for ${person.name} not deleted: \"${error}\"`, MessageType.Error))
