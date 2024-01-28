@@ -23,7 +23,14 @@ const App = () => {
     useEffect(() => {
         personsService.getAll()
             .then((remotePersons) => setPersons(remotePersons))
-            .catch((error) => printTempMessage(`Persons not fetched: \"${error}\"`, MessageType.Error))
+            .catch((error) => {
+                if (error.response.data.error) {
+                    printTempMessage(`Persons not fetched: \"${error.response.data.error}\"`,
+                        MessageType.Error)
+                } else {
+                    printTempMessage(`Persons not fetched: \"${error}\"`, MessageType.Error)
+                }
+            })
     }, [])
 
     const addNumber = (event) => {
@@ -45,7 +52,14 @@ const App = () => {
                     setNewNumber('')
                     printTempMessage(`Entry added for ${newName}`, MessageType.Info)
                 })
-                .catch((error) => printTempMessage(`New entry not added: \"${error}\"`, MessageType.Error))
+                .catch((error) => {
+                    if (error.response.data.error) {
+                        printTempMessage(`New entry not added: \"${error.response.data.error}\"`,
+                            MessageType.Error)
+                    } else {
+                        printTempMessage(`New entry not added: \"${error}\"`, MessageType.Error)
+                    }
+                })
         } else {
             if (window.confirm(`${newName} is already in the phone book. Update the number?`)) {
                 personsService.update(existingEntry._id, newName, newNumber)
@@ -55,7 +69,14 @@ const App = () => {
                         setNewNumber('')
                         printTempMessage(`Entry updated for ${newName}`, MessageType.Info)
                     })
-                    .catch((error) => printTempMessage(`Existing entry not updated: \"${error}\"`, MessageType.Error))
+                    .catch((error) => {
+                        if (error.response.data.error) {
+                            printTempMessage(`Existing entry not updated: \"${error.response.data.error}\"`,
+                                MessageType.Error)
+                        } else {
+                            printTempMessage(`Existing entry not updated: \"${error}\"`, MessageType.Error)
+                        }
+                    })
             }
         }
     }
@@ -75,7 +96,14 @@ const App = () => {
                         setPersons(persons.filter((p) => p._id !== person._id))
                         printTempMessage(`Entry removed for ${person.name}`, MessageType.Info)
                     })
-                    .catch((error) => printTempMessage(`Entry for ${person.name} not deleted: \"${error}\"`, MessageType.Error))
+                    .catch((error) => {
+                        if (error.response.data.error) {
+                            printTempMessage(`Entry for ${person.name} not deleted: \"${error.response.data.error}\"`,
+                                MessageType.Error)
+                        } else {
+                            printTempMessage(`Entry for ${person.name} not deleted: \"${error}\"`, MessageType.Error)
+                        }
+                    })
             }}/>
         </div>)
 }
