@@ -1,10 +1,10 @@
-import {useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import Filter from './components/Filter'
-import PersonForm from "./components/PersonForm"
-import Persons from "./components/Persons"
-import Notification, {MessageType} from "./components/Notification"
-import personsService from "./services/persons"
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
+import Notification, {MessageType} from './components/Notification'
+import personsService from './services/persons'
 
 const App = () => {
     const [persons, setPersons] = useState([])
@@ -25,10 +25,10 @@ const App = () => {
             .then((remotePersons) => setPersons(remotePersons))
             .catch((error) => {
                 if (error.response.data.error) {
-                    printTempMessage(`Persons not fetched: \"${error.response.data.error}\"`,
+                    printTempMessage(`Persons not fetched: "${error.response.data.error}"`,
                         MessageType.Error)
                 } else {
-                    printTempMessage(`Persons not fetched: \"${error}\"`, MessageType.Error)
+                    printTempMessage(`Persons not fetched: "${error}"`, MessageType.Error)
                 }
             })
     }, [])
@@ -36,11 +36,11 @@ const App = () => {
     const addNumber = (event) => {
         event.preventDefault()
         if (newName.length === 0) {
-            alert(`Enter a name`)
+            alert('Enter a name')
             return
         }
         if (newNumber.length === 0) {
-            alert(`Enter a number`)
+            alert('Enter a number')
             return
         }
         const existingEntry = persons.find((element) => element.name === newName)
@@ -54,10 +54,10 @@ const App = () => {
                 })
                 .catch((error) => {
                     if (error.response.data.error) {
-                        printTempMessage(`New entry not added: \"${error.response.data.error}\"`,
+                        printTempMessage(`New entry not added: "${error.response.data.error}"`,
                             MessageType.Error)
                     } else {
-                        printTempMessage(`New entry not added: \"${error}\"`, MessageType.Error)
+                        printTempMessage(`New entry not added: "${error}"`, MessageType.Error)
                     }
                 })
         } else {
@@ -71,10 +71,10 @@ const App = () => {
                     })
                     .catch((error) => {
                         if (error.response.data.error) {
-                            printTempMessage(`Existing entry not updated: \"${error.response.data.error}\"`,
+                            printTempMessage(`Existing entry not updated: "${error.response.data.error}"`,
                                 MessageType.Error)
                         } else {
-                            printTempMessage(`Existing entry not updated: \"${error}\"`, MessageType.Error)
+                            printTempMessage(`Existing entry not updated: "${error}"`, MessageType.Error)
                         }
                     })
             }
@@ -82,30 +82,30 @@ const App = () => {
     }
 
     return (<div>
-            <h2>Phonebook</h2>
-            <Notification message={messageText} messageType={messageType}/>
-            <Filter prefix={prefix} onPrefixChange={(e) => setPrefix(e.target.value)}/>
-            <h3>Add a new entry</h3>
-            <PersonForm name={newName} onNameChange={(e) => setNewName(e.target.value)}
-                        phoneNumber={newNumber} onPhoneNumberChange={(e) => setNewNumber(e.target.value)}
-                        onSubmit={addNumber}/>
-            <h3>Numbers</h3>
-            <Persons persons={persons} prefix={prefix} onDelete={(person) => {
-                personsService.remove(person._id)
-                    .then((status) => {
-                        setPersons(persons.filter((p) => p._id !== person._id))
-                        printTempMessage(`Entry removed for ${person.name}`, MessageType.Info)
-                    })
-                    .catch((error) => {
-                        if (error.response.data.error) {
-                            printTempMessage(`Entry for ${person.name} not deleted: \"${error.response.data.error}\"`,
-                                MessageType.Error)
-                        } else {
-                            printTempMessage(`Entry for ${person.name} not deleted: \"${error}\"`, MessageType.Error)
-                        }
-                    })
-            }}/>
-        </div>)
+        <h2>Phonebook</h2>
+        <Notification message={messageText} messageType={messageType}/>
+        <Filter prefix={prefix} onPrefixChange={(e) => setPrefix(e.target.value)}/>
+        <h3>Add a new entry</h3>
+        <PersonForm name={newName} onNameChange={(e) => setNewName(e.target.value)}
+            phoneNumber={newNumber} onPhoneNumberChange={(e) => setNewNumber(e.target.value)}
+            onSubmit={addNumber}/>
+        <h3>Numbers</h3>
+        <Persons persons={persons} prefix={prefix} onDelete={(person) => {
+            personsService.remove(person._id)
+                .then(() => {
+                    setPersons(persons.filter((p) => p._id !== person._id))
+                    printTempMessage(`Entry removed for ${person.name}`, MessageType.Info)
+                })
+                .catch((error) => {
+                    if (error.response.data.error) {
+                        printTempMessage(`Entry for ${person.name} not deleted: "${error.response.data.error}"`,
+                            MessageType.Error)
+                    } else {
+                        printTempMessage(`Entry for ${person.name} not deleted: "${error}"`, MessageType.Error)
+                    }
+                })
+        }}/>
+    </div>)
 }
 
 export default App
